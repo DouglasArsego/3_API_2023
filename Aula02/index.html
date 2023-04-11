@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula02 - DSAPI</title>
+</head>
+<body>
+    
+    <form id="meuForm" action="salvar.php" 
+        onsubmit="return validar()">
+        <input type="text" id="txtValor">
+        <input type="submit" value="Salvar">
+    </form>
+    <p id="info"></p>
+
+
+    <hr>
+
+    <button onclick="lerObjeto()">Ler Objeto</button>
+    <div id="divObjeto"></div>
+
+
+    <hr>
+    <h1>Cálculo de área</h1>
+    <input type="text" id="txtLargura" /> <br>
+    <input type="text" id="txtAltura" /> <br>
+    <input type="button" onclick="calcularArea()" /> <br>
+    <p id="pResultado"></p> 
+
+
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
