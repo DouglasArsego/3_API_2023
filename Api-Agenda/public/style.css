@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  h2 {
+    color: rgb(28, 28, 28);
+    margin-top: 20px;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"] {
+    width: 200px;
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  button[type="submit"] {
+    padding: 5px 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #666;
+  }
+  
+  #registros {
+    margin-top: 20px;
+  }
+  
+  #registros div {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  #mensagemSucesso,
+  #mensagemSucessoUpdate,
+  #mensagemSucessoDelete {
+    color: green;
+    margin-top: 10px;
+  }
+  

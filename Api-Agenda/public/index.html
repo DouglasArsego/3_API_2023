@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interagir com a API</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Bem-vindo ao Banco de Dados - Agenda </h1>
+  
+  <button onclick="getRegistros()">Obter Registros</button>
+  <div id="registros"></div>
+  
+  <h2>Adicionar Registro</h2>
+  <form onsubmit="addRegistro(event)">
+    <input type="text" name="tema" placeholder="Tema">
+    <input type="text" name="nota" placeholder="Nota">
+    <input type="text" name="data" placeholder="Data">
+    <button type="submit">Adicionar</button>
+    <div id="mensagemSucesso"></div>
+  </form>
+  
+  <h2>Atualizar Registro</h2>
+  <form onsubmit="updateRegistro(event)">
+    <input type="text" name="id" placeholder="ID do Registro">
+    <input type="text" name="tema" placeholder="Novo Tema">
+    <input type="text" name="nota" placeholder="Nova Nota">
+    <input type="text" name="data" placeholder="Nova Data">
+    <button type="submit">Atualizar</button>
+    <div id="mensagemSucessoUpdate"></div>
+  </form>
+  
+  <h2>Excluir Registro</h2>
+  <form onsubmit="deleteRegistro(event)">
+    <input type="text" name="id" placeholder="ID do Registro">
+    <button type="submit">Excluir</button>
+    <div id="mensagemSucessoDelete"></div>
+  </form>
+  
+
+  <script>
+    // Função para realizar uma requisição GET para obter os registros
+    function getRegistros() {
+      fetch('/registros')
+        .then(response => response.json())
+        .then(data => {
+          console.log('Registros obtidos:', data);
+          
+          // Limpar a área de registros antes de exibir os novos registros
+          const registrosDiv = document.getElementById('registros');
+          registrosDiv.innerHTML = '';
+
+          // Criar elementos HTML para cada registro e adicioná-los à área de registros
+          data.forEach(registro => {
+            const registroDiv = document.createElement('div');
+            registroDiv.innerHTML = `
+              <p>ID: ${registro.id}</p>
+              <p>Tema: ${registro.tema}</p>
+              <p>Nota: ${registro.nota}</p>
+              <p>Data: ${registro.data}</p>
+            `;
+            registrosDiv.appendChild(registroDiv);
+          });
+        })
+        .catch(error => {
+          console.error('Erro ao obter registros:', error);
+        });
+    }
+    
+    // Função para exibir uma mensagem de sucesso
+    function exibirMensagemSucesso(mensagem, elementId) {
+      const mensagemSucesso = document.getElementById(elementId);
+      
+      // Remove a mensagem anterior, se existir
+      while (mensagemSucesso.firstChild) {
+        mensagemSucesso.removeChild(mensagemSucesso.firstChild);
+      }
+      
+      // Cria um novo elemento de texto com a mensagem de sucesso
+      const textoMensagem = document.createTextNode(mensagem);
+      
+      // Adiciona o novo elemento de texto ao elemento de mensagem de sucesso
+      mensagemSucesso.appendChild(textoMensagem);
+    }
+    
+    // Função para realizar uma requisição POST para adicionar um novo registro
+    function addRegistro(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const formData = new FormData(form);
+      
+      fetch('/registros', {
+        method: 'POST',
+        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log('Resposta do servidor:', data);
+          exibirMensagemSucesso('Registro adicionado com sucesso!', 'mensagemSucesso');
+        })
+        .catch(error => {
+          console.error('Erro ao adicionar registro:', error);
+        });
+    }
+    
+    // Função para realizar uma requisição PUT para atualizar um registro existente
+    function updateRegistro(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const formData = new FormData(form);
+      const id = formData.get('id');
+      
+      fetch(`/registros/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log('Resposta do servidor:', data);
+          exibirMensagemSucesso('Registro atualizado com sucesso!', 'mensagemSucessoUpdate');
+        })
+        .catch(error => {
+          console.error('Erro ao atualizar registro:', error);
+        });
+    }
+    
+    // Função para realizar uma requisição DELETE para excluir um registro
+    function deleteRegistro(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const formData = new FormData(form);
+      const id = formData.get('id');
+      
+      fetch(`/registros/${id}`, {
+        method: 'DELETE'
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log('Resposta do servidor:', data);
+          exibirMensagemSucesso('Registro excluído com sucesso!', 'mensagemSucessoDelete');
+        })
+        .catch(error => {
+          console.error('Erro ao excluir registro:', error);
+        });
+    }
+  </script>
+</body>
+</html>
